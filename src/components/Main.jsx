@@ -12,11 +12,12 @@ export default class Main extends React.Component {
   };
 
   componentDidMount() {
+    console.log(process.env);
     fetch(`https://www.omdbapi.com/?i=tt3896198&apikey=${API_KEY}&s=matrix`)
       .then((response) => response.json())
       .then((data) => this.setState({ movies: data.Search, loading: false }))
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.setState({ loading: false });
       });
   }
@@ -31,7 +32,7 @@ export default class Main extends React.Component {
       .then((response) => response.json())
       .then((data) => this.setState({ movies: data.Search, loading: false }))
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         this.setState({ loading: false });
       });
   };
