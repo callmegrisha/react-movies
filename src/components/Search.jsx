@@ -1,88 +1,82 @@
 import React from 'react';
 
-export default class Search extends React.Component {
-  state = {
-    search: '',
-    type: 'all',
-  };
+const Search = (props) => {
+  const [search, setSearch] = React.useState('');
+  const [type, setType] = React.useState('all');
 
-  handleKey = (event) => {
+  const handleKey = (event) => {
     if (event.key === 'Enter') {
-      this.props.searchMovies(this.state.search, this.state.type);
+      props.searchMovies(search, type);
     }
   };
 
-  handleFilter = (event) => {
-    this.setState(
-      () => ({ type: event.target.dataset.type }),
-      () => {
-        this.props.searchMovies(this.state.search, this.state.type);
-      }
-    );
+  const handleFilter = (event) => {
+    setType(event.target.dataset.type);
+    props.searchMovies(search, event.target.dataset.type);
   };
 
-  render() {
-    return (
-      <>
-        <form className="search-form">
-          <div className="search-form__search">
+  return (
+    <>
+      <form className="search-form">
+        <div className="search-form__search">
+          <input
+            className="search-form__input input"
+            placeholder="Enter the name of the movie"
+            type="search"
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+            }}
+            onKeyDown={handleKey}
+          />
+          <button
+            type="button"
+            className="search-form__btn btn"
+            onClick={() => {
+              props.searchMovies(search, type);
+            }}
+          >
+            search
+          </button>
+        </div>
+        <div className="search-form__types">
+          <label className="search-form__label">
             <input
-              className="search-form__input input"
-              placeholder="Enter the name of the movie"
-              type="search"
-              value={this.state.search}
-              onChange={(e) => {
-                this.setState({ search: e.target.value });
-              }}
-              onKeyDown={this.handleKey}
+              className="search-form__radio"
+              type="radio"
+              name="type"
+              data-type="all"
+              onChange={handleFilter}
+              checked={type === 'all'}
             />
-            <button
-              type="button"
-              className="search-form__btn btn"
-              onClick={() => {
-                this.props.searchMovies(this.state.search, this.state.type);
-              }}
-            >
-              search
-            </button>
-          </div>
-          <div className="search-form__types">
-            <label className="search-form__label">
-              <input
-                className="search-form__radio"
-                type="radio"
-                name="type"
-                data-type="all"
-                onChange={this.handleFilter}
-                checked={this.state.type === 'all'}
-              />
-              <span>all</span>
-            </label>
-            <label className="search-form__label">
-              <input
-                className="search-form__radio"
-                type="radio"
-                name="type"
-                data-type="movie"
-                onChange={this.handleFilter}
-                checked={this.state.type === 'movie'}
-              />
-              <span>movies</span>
-            </label>
-            <label className="search-form__label">
-              <input
-                className="search-form__radio"
-                type="radio"
-                name="type"
-                data-type="series"
-                onChange={this.handleFilter}
-                checked={this.state.type === 'series'}
-              />
-              <span>series</span>
-            </label>
-          </div>
-        </form>
-      </>
-    );
-  }
-}
+            <span>all</span>
+          </label>
+          <label className="search-form__label">
+            <input
+              className="search-form__radio"
+              type="radio"
+              name="type"
+              data-type="movie"
+              onChange={handleFilter}
+              checked={type === 'movie'}
+            />
+            <span>movies</span>
+          </label>
+          <label className="search-form__label">
+            <input
+              className="search-form__radio"
+              type="radio"
+              name="type"
+              data-type="series"
+              onChange={handleFilter}
+              checked={type === 'series'}
+            />
+            <span>series</span>
+          </label>
+        </div>
+      </form>
+    </>
+  );
+};
+
+export default Search;
